@@ -1,0 +1,38 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Block sensitive bootstrap files
+RewriteRule ^initialize\.(local|production)\.php$ - [F,L]
+
+# Allow existing files and folders (images, css, js, uploads)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+</IfModule>
+
+<FilesMatch "^(initialize\.local\.php|initialize\.production\.php|\.env|\.gitignore)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<FilesMatch "^(config\.php|initialize\.php)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# Disable PHP execution inside uploads (if supported)
+<IfModule mod_php7.c>
+  php_flag engine off
+</IfModule>

@@ -1,0 +1,8 @@
+uploads/backups/*.sql
+initialize.production.php
+initialize.local.php
+.git/
+database/build_infinityfree_deploy.php
+database/run_new_modules_migration.php
+database/fix_expenses_table.php
+DEPLOY_INFINITYFREE.md

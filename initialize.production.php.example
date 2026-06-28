@@ -1,0 +1,10 @@
+<?php
+/**
+ * InfinityFree production credentials (copy to initialize.production.php on the server).
+ * Do not commit initialize.production.php to public repositories.
+ *
+ * Render/Docker uses environment variables instead (DB_HOST, DB_USER, etc.).
+ */
+if (!defined('DB_PASSWORD')) {
+    define('DB_PASSWORD', 'YOUR_VPANEL_MYSQL_PASSWORD');
+}

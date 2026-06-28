@@ -1,0 +1,18 @@
+Options -Indexes
+
+# Allow images and common media; block script execution
+<FilesMatch "\.(php|phtml|php3|php4|php5|phar|pl|py|cgi|asp|aspx|jsp|sh)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|mp3|wav|pdf)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
