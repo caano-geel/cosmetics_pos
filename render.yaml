@@ -1,9 +1,6 @@
-# Render Blueprint — CBPOS (Docker + external MySQL)
-# Docs: https://render.com/docs/blueprint-spec
-#
-# Render does not provide free MySQL. Create a MySQL database elsewhere
-# (PlanetScale, Railway, Aiven, etc.) and set the DB_* variables in the
-# Render dashboard or link them here with sync: false.
+# Render Blueprint — CBPOS (Docker + .env.render)
+# Database credentials are loaded from `.env.render` → `.env` at container start.
+# No dashboard env vars required for DB_* when `.env.render` is in the repo/image.
 
 services:
   - type: web
@@ -14,14 +11,3 @@ services:
     dockerContext: .
     healthCheckPath: /
     autoDeploy: true
-    envVars:
-      - key: APP_ENV
-        value: production
-      - key: DB_HOST
-        sync: false
-      - key: DB_USER
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
-      - key: DB_NAME
-        sync: false

@@ -1,8 +1,6 @@
 initialize.production.php
 initialize.local.php
 .env
-.env.*
-!.env.example
 
 uploads/backups/*.sql
 
@@ -12,11 +10,9 @@ logs/
 .DS_Store
 Thumbs.db
 
-# IDE / OS
 .idea/
 .vscode/
 *.swp
 *.swo
 
-# Local-only migration runners (use database/infinityfree_deploy.sql for deploy)
 database/build_infinityfree_deploy.php

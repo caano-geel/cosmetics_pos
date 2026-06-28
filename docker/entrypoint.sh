@@ -3,7 +3,13 @@ set -e
 
 export APACHE_PORT="${PORT:-80}"
 
-# Render and other PaaS hosts inject PORT; Apache must listen on it.
+# Render: activate .env.render as runtime .env (if .env not already present).
+if [ -f /var/www/html/.env.render ] && [ ! -f /var/www/html/.env ]; then
+    cp /var/www/html/.env.render /var/www/html/.env
+    chown www-data:www-data /var/www/html/.env
+    chmod 640 /var/www/html/.env
+fi
+
 envsubst '${APACHE_PORT}' < /etc/apache2/ports.conf.template > /etc/apache2/ports.conf
 envsubst '${APACHE_PORT}' < /etc/apache2/sites-available/000-default.conf.template > /etc/apache2/sites-available/000-default.conf
 

@@ -2,39 +2,18 @@
 /**
  * Application bootstrap.
  *
- * Database config priority:
+ * Configuration priority:
  * 1. initialize.local.php (optional local overrides)
- * 2. Environment variables (Render / Docker): DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
- * 3. Local XAMPP when host is localhost
- * 4. InfinityFree + initialize.production.php (optional password file on server)
+ * 2. .env file (Render / production)
+ * 3. initialize.production.php (InfinityFree password or full DB config)
+ * 4. Local XAMPP defaults (localhost)
+ * 5. InfinityFree legacy defaults (host/user/db name)
  */
 if (!defined('base_app')) {
     define('base_app', str_replace('\\', '/', __DIR__) . '/');
 }
 
-if (!function_exists('app_env')) {
-    function app_env($key, $default = '')
-    {
-        $val = getenv($key);
-        if ($val !== false && $val !== '') {
-            return $val;
-        }
-        if (isset($_ENV[$key]) && $_ENV[$key] !== '') {
-            return $_ENV[$key];
-        }
-        if (isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
-            return $_SERVER[$key];
-        }
-        return $default;
-    }
-}
-
-if (!function_exists('app_uses_env_database')) {
-    function app_uses_env_database()
-    {
-        return app_env('DB_HOST') !== '' || app_env('DB_NAME') !== '';
-    }
-}
+require_once __DIR__ . '/inc/load_env.php';
 
 $__http_host = strtolower($_SERVER['HTTP_HOST'] ?? 'localhost');
 $__is_local = in_array($__http_host, array('localhost', '127.0.0.1'), true)
@@ -44,6 +23,8 @@ $__is_local = in_array($__http_host, array('localhost', '127.0.0.1'), true)
 if (is_file(__DIR__ . '/initialize.local.php')) {
     require_once __DIR__ . '/initialize.local.php';
 }
+
+app_load_dotenv();
 
 if (!defined('APP_ENV')) {
     $env_app = app_env('APP_ENV');
@@ -55,12 +36,20 @@ if (!defined('APP_ENV')) {
 }
 
 if (!defined('DB_SERVER')) {
-    if (app_uses_env_database()) {
+    if (app_dotenv_has_database()) {
         define('DB_SERVER', app_env('DB_HOST', 'localhost'));
         define('DB_USERNAME', app_env('DB_USER', 'root'));
         define('DB_PASSWORD', app_env('DB_PASSWORD', ''));
         define('DB_NAME', app_env('DB_NAME', 'cbpos_db'));
-    } elseif (APP_ENV === 'local' || $__is_local) {
+    }
+}
+
+if (!defined('DB_SERVER') && is_file(__DIR__ . '/initialize.production.php')) {
+    require_once __DIR__ . '/initialize.production.php';
+}
+
+if (!defined('DB_SERVER')) {
+    if (APP_ENV === 'local' || $__is_local) {
         define('DB_SERVER', 'localhost');
         define('DB_USERNAME', 'root');
         define('DB_PASSWORD', '');
@@ -69,9 +58,6 @@ if (!defined('DB_SERVER')) {
         define('DB_SERVER', 'sql305.infinityfree.com');
         define('DB_USERNAME', 'if0_42288113');
         define('DB_NAME', 'if0_42288113_cbpos_db');
-        if (is_file(__DIR__ . '/initialize.production.php')) {
-            require_once __DIR__ . '/initialize.production.php';
-        }
         if (!defined('DB_PASSWORD')) {
             define('DB_PASSWORD', '');
         }

@@ -1,10 +1,13 @@
 <?php
 /**
- * InfinityFree production credentials (copy to initialize.production.php on the server).
- * Do not commit initialize.production.php to public repositories.
+ * InfinityFree fallback (when no `.env` file is present).
+ * Copy to initialize.production.php on the server.
  *
- * Render/Docker uses environment variables instead (DB_HOST, DB_USER, etc.).
+ * You may define only DB_PASSWORD, or all database constants:
  */
+// if (!defined('DB_SERVER')) define('DB_SERVER', 'sql305.infinityfree.com');
+// if (!defined('DB_USERNAME')) define('DB_USERNAME', 'if0_42288113');
+// if (!defined('DB_NAME')) define('DB_NAME', 'if0_42288113_cbpos_db');
 if (!defined('DB_PASSWORD')) {
     define('DB_PASSWORD', 'YOUR_VPANEL_MYSQL_PASSWORD');
 }

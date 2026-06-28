@@ -12,7 +12,7 @@ RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 </IfModule>
 
-<FilesMatch "^(initialize\.local\.php|initialize\.production\.php|\.env|\.gitignore)$">
+<FilesMatch "^(initialize\.local\.php|initialize\.production\.php|\.env|\.env\.render|\.gitignore)$">
   <IfModule mod_authz_core.c>
     Require all denied
   </IfModule>

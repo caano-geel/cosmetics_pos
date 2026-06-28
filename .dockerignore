@@ -2,7 +2,6 @@
 .gitignore
 .github
 .env
-.env.*
 initialize.production.php
 initialize.local.php
 uploads/backups/*.sql
