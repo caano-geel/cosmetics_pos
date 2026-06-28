@@ -1,6 +1,6 @@
-# Render Blueprint — CBPOS (Docker + .env.render)
-# Database credentials are loaded from `.env.render` → `.env` at container start.
-# No dashboard env vars required for DB_* when `.env.render` is in the repo/image.
+# Render Blueprint — CBPOS (Docker + Aiven MySQL)
+# Non-secret config: .env.render (DB_HOST, DB_PORT, DB_SSL, etc.)
+# Secret: set DB_PASSWORD in Render Dashboard → Environment
 
 services:
   - type: web
@@ -11,3 +11,6 @@ services:
     dockerContext: .
     healthCheckPath: /
     autoDeploy: true
+    envVars:
+      - key: DB_PASSWORD
+        sync: false

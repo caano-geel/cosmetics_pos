@@ -4,7 +4,7 @@
  *
  * Configuration priority:
  * 1. initialize.local.php (optional local overrides)
- * 2. .env file (Render / production)
+ * 2. .env.render / .env + Render process env vars (DB_PASSWORD from Render dashboard)
  * 3. initialize.production.php (InfinityFree password or full DB config)
  * 4. Local XAMPP defaults (localhost)
  * 5. InfinityFree legacy defaults (host/user/db name)
@@ -36,12 +36,7 @@ if (!defined('APP_ENV')) {
 }
 
 if (!defined('DB_SERVER')) {
-    if (app_dotenv_has_database()) {
-        define('DB_SERVER', app_env('DB_HOST', 'localhost'));
-        define('DB_USERNAME', app_env('DB_USER', 'root'));
-        define('DB_PASSWORD', app_env('DB_PASSWORD', ''));
-        define('DB_NAME', app_env('DB_NAME', 'cbpos_db'));
-    }
+    app_configure_database_from_env();
 }
 
 if (!defined('DB_SERVER') && is_file(__DIR__ . '/initialize.production.php')) {
@@ -66,6 +61,18 @@ if (!defined('DB_SERVER')) {
 
 if (!defined('DB_HOST')) {
     define('DB_HOST', DB_SERVER);
+}
+
+if (!defined('DB_PORT')) {
+    define('DB_PORT', 3306);
+}
+
+if (!defined('DB_SSL')) {
+    define('DB_SSL', false);
+}
+
+if (!defined('DB_SSL_CA')) {
+    define('DB_SSL_CA', '');
 }
 
 if (!function_exists('app_resolve_base_url')) {

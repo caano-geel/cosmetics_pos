@@ -19,7 +19,7 @@ COPY docker/apache/000-default.conf /etc/apache2/sites-available/000-default.con
 COPY . /var/www/html/
 
 RUN sed -i 's/\r$//' /var/www/html/docker/entrypoint.sh \
-    && mkdir -p uploads/avatars uploads/brands uploads/backups uploads/system \
+    && mkdir -p uploads/avatars uploads/brands uploads/backups uploads/system certs \
     && chown -R www-data:www-data uploads \
     && chmod -R 775 uploads \
     && chmod +x /var/www/html/docker/entrypoint.sh

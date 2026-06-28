@@ -3,8 +3,8 @@ set -e
 
 export APACHE_PORT="${PORT:-80}"
 
-# Render: activate .env.render as runtime .env (if .env not already present).
-if [ -f /var/www/html/.env.render ] && [ ! -f /var/www/html/.env ]; then
+# Sync non-secret config from .env.render; Render injects DB_PASSWORD at runtime.
+if [ -f /var/www/html/.env.render ]; then
     cp /var/www/html/.env.render /var/www/html/.env
     chown www-data:www-data /var/www/html/.env
     chmod 640 /var/www/html/.env

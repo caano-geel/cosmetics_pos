@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../initialize.php';
-$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+$port = defined('DB_PORT') ? (int) DB_PORT : 3306;
+$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME, $port);
 if ($conn->connect_error) die($conn->connect_error);
 $sql = "CREATE TABLE IF NOT EXISTS `expenses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
